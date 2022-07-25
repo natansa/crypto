@@ -17,19 +17,18 @@ namespace crypto.Controllers
         }
 
         [HttpPost("criptografar")]
-        public IActionResult Criptografar([FromBody] DadosSensiveis dadosSensiveis)
+        public IActionResult Criptografar([FromBody] Senha senha)
         {
-            var dadosSensiveisString = JsonSerializer.Serialize(dadosSensiveis);
-            _logger.LogInformation($"Dados sensíveis: {dadosSensiveisString}");
+            var senhaString = JsonSerializer.Serialize(senha);
+            _logger.LogInformation($"Senha aberta: {senhaString}");
 
-            var resultado = new DadosSensiveis
+            var resultado = new Senha
             {
-                Nome = CryptoSha.Encrypt(dadosSensiveis.Nome),
-                Documento = CryptoSha.Encrypt(dadosSensiveis.Documento),
+                Valor = CryptoSha.Encrypt(senha.Valor)
             };
 
-            var dadosCriptografados = JsonSerializer.Serialize(resultado);
-            _logger.LogInformation($"Dados sensíveis criptografados: {dadosCriptografados}");
+            var senhaCriptografada = JsonSerializer.Serialize(resultado);
+            _logger.LogInformation($"Senha criptografada: {senhaCriptografada}");
 
             return Ok(resultado);
         }
